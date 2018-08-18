@@ -24,4 +24,6 @@ object Dependencies {
     val `circe-core` = "io.circe" %% "circe-core" % version
     val `circe-magnolia-derivation` = "io.circe" %% "circe-magnolia-derivation" % "0.2.0"
   }
+
+  val utest = "com.lihaoyi" %% "utest" % "0.6.3"
 }

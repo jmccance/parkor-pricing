@@ -1,35 +1,31 @@
 package parkor
 
-import java.time.DayOfWeek._
-import java.time.LocalTime
-
-import akka.http.scaladsl.model.headers.{HttpOrigin, HttpOriginRange}
 import akka.http.scaladsl.server.{HttpApp, Route}
+import io.circe.parser._
+import parkor.config.{ApplicationConfig, RateConfig}
 import parkor.controllers.RateController
-import parkor.cors.scaladsl.{CorsDirectives, RequestIdDirective}
-import parkor.domain.{Price, Rate}
+import parkor.cors.scaladsl.CorsDirectives
 import parkor.services.RateServiceImpl
 
-object Boot extends HttpApp with CorsDirectives with RequestIdDirective {
+import scala.io.Source
+
+class Application(config: ApplicationConfig) extends HttpApp with CorsDirectives {
+
+  private val rates = {
+    val jsonString = Source.fromFile(config.ratesFile).mkString
+    val rateConfig =
+      for {
+        rateConfig <- decode[RateConfig](jsonString)
+      } yield rateConfig.rates.map(_.toRate)
+
+    rateConfig.getOrElse {
+      throw new RuntimeException("fuck")
+    }.toSet
+  }
 
   // TODO Dependency injection
   // TODO Load rates from config
-  private val rateController = new RateController(new RateServiceImpl(
-    Set(
-      Rate(
-        Set(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY),
-        start = LocalTime.parse("06:00"),
-        end = LocalTime.parse("18:00"),
-        price = Price(1500)
-      ),
-      Rate(
-        Set(SATURDAY, SUNDAY),
-        start = LocalTime.parse("06:00"),
-        end = LocalTime.parse("20:00"),
-        price = Price(2000)
-      )
-    )
-  ))
+  private val rateController = new RateController(new RateServiceImpl(rates))
 
   override val routes: Route =
   // TODO: Really we just want some generic `parkorRoutes` method here that
@@ -41,8 +37,13 @@ object Boot extends HttpApp with CorsDirectives with RequestIdDirective {
     cors() {
       path("rates")(rateController.routes)
     }
+}
 
+object Boot {
   def main(args: Array[String]) {
-    Boot.startServer("localhost", 8080)
+    val config = pureconfig.loadConfigOrThrow[ApplicationConfig]("parkor")
+    val app = new Application(config)
+
+    app.startServer("localhost", config.port)
   }
 }

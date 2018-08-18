@@ -10,6 +10,9 @@ lazy val `parkor-pricing` =
         `akka-http-circe`,
         Circe.`circe-core`,
         Circe.`circe-magnolia-derivation`,
+        Circe.`circe-parser`,
+        pureconfig,
+        `scala-xml`,
 
         Akka.`akka-stream-testkit` % Test,
         AkkaHttp.`akka-http-testkit` % Test,

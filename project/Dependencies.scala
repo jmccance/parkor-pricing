@@ -24,7 +24,12 @@ object Dependencies {
 
     val `circe-core` = "io.circe" %% "circe-core" % version
     val `circe-magnolia-derivation` = "io.circe" %% "circe-magnolia-derivation" % "0.2.0"
+    val `circe-parser` = "io.circe" %% "circe-parser" % version
   }
+
+  val pureconfig = "com.github.pureconfig" %% "pureconfig" % "0.9.1"
+
+  val `scala-xml` = "org.scala-lang.modules" %% "scala-xml" % "1.1.0"
 
   val utest = "com.lihaoyi" %% "utest" % "0.6.3"
 }

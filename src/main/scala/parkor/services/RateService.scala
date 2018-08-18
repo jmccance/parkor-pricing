@@ -2,9 +2,8 @@ package parkor.services
 
 import java.time._
 
-import io.circe.Encoder
-import io.circe.magnolia.derivation.encoder.semiauto._
 import parkor.domain.{Price, Rate}
+import parkor.services.RateServiceError.InvalidDateRangeError
 
 trait RateService {
   def priceFor(
@@ -14,6 +13,8 @@ trait RateService {
 }
 
 class RateServiceImpl(private val rates: Set[Rate]) extends RateService {
+
+  import RateService._
 
   override def priceFor(
     start: LocalDateTime,
@@ -27,12 +28,25 @@ class RateServiceImpl(private val rates: Set[Rate]) extends RateService {
   }
 }
 
-sealed trait RateServiceError extends Product with Serializable
+object RateService {
+  def getDayOfWeek(
+    start: LocalDateTime,
+    end: LocalDateTime
+  ): Either[RateServiceError, DayOfWeek] =
+    if (start.getDayOfWeek != end.getDayOfWeek) {
+      Left(InvalidDateRangeError)
+    } else {
+      Right(start.getDayOfWeek)
+    }
 
-object RateServiceError {
-
-  implicit val encoder: Encoder[RateServiceError] = deriveMagnoliaEncoder
-
-  case object InvalidDateRangeError extends RateServiceError
-
+  def getRateForTime(
+    ratesForDay: Iterable[Rate],
+    start: LocalDateTime,
+    end: LocalDateTime
+  ): Option[Rate] = {
+    ratesForDay.find { rate =>
+      rate.start.isBefore(start.toLocalTime) &&
+        rate.end.isAfter(end.toLocalTime)
+    }
+  }
 }

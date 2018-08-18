@@ -3,13 +3,14 @@ package parkor
 import java.time.DayOfWeek._
 import java.time.LocalTime
 
+import akka.http.scaladsl.model.headers.{HttpOrigin, HttpOriginRange}
 import akka.http.scaladsl.server.{HttpApp, Route}
 import parkor.controllers.RateController
-import parkor.cors.scaladsl.CorsDirectives
+import parkor.cors.scaladsl.{CorsDirectives, RequestIdDirective}
 import parkor.domain.{Price, Rate}
 import parkor.services.RateServiceImpl
 
-object Boot extends HttpApp with CorsDirectives {
+object Boot extends HttpApp with CorsDirectives with RequestIdDirective {
 
   // TODO Dependency injection
   // TODO Load rates from config

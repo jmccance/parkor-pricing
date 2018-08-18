@@ -4,6 +4,7 @@ import java.time.DayOfWeek._
 import java.time.{LocalDateTime, LocalTime}
 
 import parkor.domain._
+import parkor.services.RateService._
 import utest._
 
 object RateServiceTest extends TestSuite {

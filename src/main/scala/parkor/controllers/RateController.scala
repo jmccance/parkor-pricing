@@ -4,10 +4,9 @@ import java.time.ZonedDateTime
 
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
 import parkor.services.RateService
 
-class RateController(rateService: RateService) extends FailFastCirceSupport {
+class RateController(rateService: RateService) {
 
   val routes: Route =
     get {

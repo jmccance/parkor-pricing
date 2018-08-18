@@ -6,6 +6,7 @@ lazy val `parkor-pricing` =
       libraryDependencies ++= Seq(
         Akka.`akka-stream`,
         AkkaHttp.`akka-http`,
+        AkkaHttp.`akka-http-xml`,
         `akka-http-circe`,
         Circe.`circe-core`,
         Circe.`circe-magnolia-derivation`,

@@ -1,4 +1,4 @@
-package parkor
+package parkor.controllers
 
 import io.circe.Encoder
 import io.circe.magnolia.derivation.encoder.semiauto._

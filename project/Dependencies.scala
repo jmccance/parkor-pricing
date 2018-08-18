@@ -14,6 +14,7 @@ object Dependencies {
 
     val `akka-http` = "com.typesafe.akka" %% "akka-http" % version
     val `akka-http-testkit` = "com.typesafe.akka" %% "akka-http-testkit" % version
+    val `akka-http-xml` = "com.typesafe.akka" %% "akka-http-xml" % version
   }
 
   val `akka-http-circe` = "de.heikoseeberger" %% "akka-http-circe" % "1.21.0"

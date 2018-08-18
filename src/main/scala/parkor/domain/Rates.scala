@@ -9,5 +9,5 @@ case class Rate(
   price: Price
 )
 
-case class Price(value: BigInt)
+case class Price(value: Int)
 

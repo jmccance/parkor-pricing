@@ -31,6 +31,7 @@ package object controllers {
       ScalaXmlSupport.defaultNodeSeqMarshaller.compose[A](xmlEncoder(_))
     )
 
+  /** Map RateServiceErrors to 400 responses. */
   implicit def errorMarshaller(
     implicit entityMarshaller: ToEntityMarshaller[RateServiceError]
   ): ToResponseMarshaller[RateServiceError] =

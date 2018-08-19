@@ -2,9 +2,9 @@ openapi: "3.0.1"
 
 info:
   title: parkor-pricing
-  version: 0.1
+  version: "0.1"
   description: |
-    Provides parking price calculation.
+    Provides endpoints for getting parking rates for given time windows.
 
 servers:
   - url: http://localhost:8080
@@ -15,9 +15,12 @@ paths:
       operationId: getRate
       summary: Get parking rates
       description: |
-        Get the rate that will be charged per hour for parking during the specified window.
+        Get the rate that will be charged per hour for parking during the
+        specified window.
 
-        TODO: Flesh out description based on requirements.
+        The start date must precede the end date.
+
+        Requests that span multiple days are not supported.
 
       parameters:
         - name: start
@@ -40,7 +43,8 @@ paths:
 
       responses:
         '200':
-          description: ''
+          description: |
+            Response describing the hourly rate for the given window.
           content:
             application/json:
               schema:
@@ -53,12 +57,18 @@ paths:
 components:
   schemas:
     IsoDateTime:
+      description: |
+        A UTC date-time in ISO-8601 format.
       type: string
       format: date-time
-      description: A UTC date-time in ISO-8601 format.
 
     RateResponse:
       properties:
         rate:
+          description: |
+            The hourly rate that would be charged for the given time window.
+
+            If parking is unavailable for the specified time window, `rate` will
+            be null.
           type: integer
           nullable: true

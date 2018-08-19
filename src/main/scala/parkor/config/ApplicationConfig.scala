@@ -4,6 +4,6 @@ import java.io.File
 
 case class ApplicationConfig(
   port: Int,
-  ratesFile: File
+  rateConfig: File
 )
 

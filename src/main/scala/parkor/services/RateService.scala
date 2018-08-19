@@ -20,6 +20,7 @@ class RateServiceImpl(private val rates: Set[Rate]) extends RateService {
     start: LocalDateTime,
     end: LocalDateTime
   ): Either[RateServiceError, Option[Price]] = {
+    // TODO Additional validation on date ranges. (start < end)
     for {
       dayOfWeek <- getDayOfWeek(start, end)
       ratesForDay <- Right(rates.filter(_.days.contains(dayOfWeek)))

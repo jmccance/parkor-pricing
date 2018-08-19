@@ -18,4 +18,4 @@ This will use `./examples/rate-config.json`. To specify a custom rate configurat
 RATE_CONFIG=$PATH_TO_FILE ./sbt run
 ```
 
-For more information on using the API, see the [OpenAPI](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md) specification in `api.yaml`.
+For more information on using the API, see the [OpenAPI](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md) specification, which is published at [http://localhost:8080/api-docs/openapi.yaml](http://localhost:8080/api-docs/openapi.yaml).

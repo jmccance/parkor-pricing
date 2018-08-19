@@ -7,7 +7,9 @@ import io.circe.Decoder
 import io.circe.magnolia.derivation.decoder.semiauto._
 import parkor.domain.{Price, Rate}
 
-case class RateConfig(rates: List[RateNode])
+case class RateConfig(rates: List[RateNode]) {
+  lazy val toRates: Set[Rate] = rates.map(_.toRate).toSet
+}
 
 object RateConfig {
   implicit val decoder: Decoder[RateConfig] = deriveMagnoliaDecoder

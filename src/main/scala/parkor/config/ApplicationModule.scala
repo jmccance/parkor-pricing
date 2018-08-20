@@ -1,9 +1,11 @@
 package parkor.config
 
+import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.RejectionHandler
 import parkor.services.{RateService, RateServiceImpl}
+import parkor.web._
 import parkor.web.controllers.RateController
 import parkor.web.directives.CustomDirectives._
-import parkor.web.{Middleware, Server}
 import scaldi.Module
 
 class ApplicationModule extends Module {
@@ -21,7 +23,14 @@ class ApplicationModule extends Module {
     }
   )
 
-  bind[Middleware] to Middleware(cors() & withRequestId)
+  bind[RejectionHandler] to
+    rejectionHandler.withFallback(RejectionHandler.default)
+
+  bind[Middleware] to Middleware(
+    cors() &
+      withRequestId &
+      handleRejections(inject[RejectionHandler])
+  )
 
   bind[RateService] to new RateServiceImpl(inject[RateConfig].toRates)
 

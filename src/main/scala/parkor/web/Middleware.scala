@@ -1,6 +1,6 @@
 package parkor.web
 
-import akka.http.scaladsl.server.{Directive0, Route}
+import akka.http.scaladsl.server._
 
 /** Marker trait to distinguish the directive we're using as middleware from any
   * other Directive0.

@@ -1,8 +1,8 @@
 package parkor.config
 
-import parkor.web.controllers.RateController
-import parkor.web.directives.CorsDirectives._
 import parkor.services.{RateService, RateServiceImpl}
+import parkor.web.controllers.RateController
+import parkor.web.directives.CustomDirectives._
 import parkor.web.{Middleware, Server}
 import scaldi.Module
 
@@ -21,7 +21,7 @@ class ApplicationModule extends Module {
     }
   )
 
-  bind[Middleware] to Middleware(cors())
+  bind[Middleware] to Middleware(cors() & withRequestId)
 
   bind[RateService] to new RateServiceImpl(inject[RateConfig].toRates)
 

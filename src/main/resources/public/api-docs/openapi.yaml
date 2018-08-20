@@ -7,7 +7,7 @@ info:
     Provides endpoints for getting parking rates for given time windows.
 
 servers:
-  - url: http://localhost:8080
+- url: http://localhost:8080
 
 paths:
   /rates:
@@ -23,23 +23,23 @@ paths:
         Requests that span multiple days are not supported.
 
       parameters:
-        - name: start
-          in: query
-          required: true
-          description: |
-            The date-time for the start of this window.
-          schema:
-            $ref: '#/components/schemas/IsoDateTime'
-          example: '2018-08-16T02:19:04.878Z'
+      - name: start
+        in: query
+        required: true
+        description: |
+          The date-time for the start of this window.
+        schema:
+          $ref: '#/components/schemas/IsoDateTime'
+        example: '2018-08-16T02:19:04.878Z'
 
-        - name: end
-          in: query
-          required: true
-          description: |
-            The date-time for the start of this window.
-          schema:
-            $ref: '#/components/schemas/IsoDateTime'
-          example: '2018-08-16T02:19:04.878Z'
+      - name: end
+        in: query
+        required: true
+        description: |
+          The date-time for the start of this window.
+        schema:
+          $ref: '#/components/schemas/IsoDateTime'
+        example: '2018-08-16T02:19:04.878Z'
 
       responses:
         '200':
@@ -56,11 +56,15 @@ paths:
 
         '400':
           description: |
-            Returned if the date range is invalid or unsupported.
+            Returned if the input is invalid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InvalidDateRangeError'
+                $ref: '#/components/schemas/Error'
+
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   schemas:
@@ -81,13 +85,10 @@ components:
           type: integer
           nullable: true
 
-    RateError:
+    ErrorResponse:
       properties:
+        timestamp:
+          type: string
+          format: date-time
         error:
-          type: object
-          schema:
-            oneOf:
-            InvalidDateRangeError:
-              type: object
-
-    Unsupported
+          type: string

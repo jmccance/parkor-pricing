@@ -7,7 +7,7 @@ import akka.http.scaladsl.server.{Directive0, Route}
   *
   * This is done to make the bindings in [[parkor.config.ApplicationModule]]
   * clearer.
-   */
+  */
 trait Middleware extends Directive0
 
 object Middleware {

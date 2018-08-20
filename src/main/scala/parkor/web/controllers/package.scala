@@ -1,6 +1,6 @@
 package parkor.web
 
-import java.time.ZonedDateTime
+import java.time.{Instant, ZonedDateTime}
 
 import akka.http.scaladsl.marshallers.xml.ScalaXmlSupport
 import akka.http.scaladsl.marshalling.{Marshaller, ToEntityMarshaller, ToResponseMarshaller}
@@ -14,8 +14,12 @@ import parkor.xml.ScalaXmlEncoder
 package object controllers {
 
   /** Unmarshaller to read date times from query-string parameters. */
-  implicit val instantUM: FromStringUnmarshaller[ZonedDateTime] =
+  implicit val zonedDateTimeUM: FromStringUnmarshaller[ZonedDateTime] =
     Unmarshaller.strict[String, ZonedDateTime](ZonedDateTime.parse)
+
+  implicit val instantEncoder: Encoder[Instant] =
+    Encoder[String].contramap { instant => instant.toString }
+
 
   /** The default entity unmarshaller.
     *

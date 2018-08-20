@@ -1,6 +1,6 @@
 package parkor.web.controllers
 
-import java.time.ZonedDateTime
+import java.time.{Instant, ZonedDateTime}
 
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
@@ -17,6 +17,13 @@ class RateController(rateService: RateService) {
     val result =
       rateService
         .priceFor(start.toLocalDateTime, end.toLocalDateTime)
+        .left
+        .map { error =>
+          ErrorResponse(
+            Instant.now(),
+            error.toString
+          )
+        }
         .map(r => RateResponse(r.map(_.value)))
 
     complete(result)

@@ -72,7 +72,7 @@ object RateServiceTest extends TestSuite {
           LocalDateTime.parse("2018-08-18T18:54:12")
         )
 
-        assert(result == Right(SATURDAY))
+        assert(result.contains(SATURDAY))
       }
 
       "returns InvalidDateRangeError if start/end spans multiple days" - {
@@ -81,7 +81,7 @@ object RateServiceTest extends TestSuite {
           LocalDateTime.parse("2018-08-19T00:00:00")
         )
 
-        assert(result == Left(RateServiceError.InvalidDateRangeError))
+        assert(result.isEmpty)
       }
     }
   }

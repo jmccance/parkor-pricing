@@ -28,20 +28,14 @@ object Dependencies {
     val `circe-parser` = "io.circe" %% "circe-parser" % version
   }
 
-  object Jackson {
-    val version = "2.9.6"
+  object Logback {
+    val version = "1.2.3"
 
-    val `jackson-core` = "com.fasterxml.jackson.core" % "jackson-core" % version
-    val `jackson-databind` = "com.fasterxml.jackson.core" % "jackson-databind" % version
+    val `logback-classic` = "ch.qos.logback" % "logback-classic" % "1.2.3"
+    val `logback-core` = "ch.qos.logback" % "logback-core" % "1.2.3"
   }
 
-  object Log4j {
-    val version = "2.11.1"
-
-    val `log4j-api` = "org.apache.logging.log4j" % "log4j-api" % version
-    val `log4j-core` = "org.apache.logging.log4j" % "log4j-core" % version
-    val `log4j-slf4j-impl` = "org.apache.logging.log4j" % "log4j-slf4j-impl" % version
-  }
+  val `logstash-logback-encoder` = "net.logstash.logback" % "logstash-logback-encoder" % "5.2"
 
   val pureconfig = "com.github.pureconfig" %% "pureconfig" % "0.9.1"
 

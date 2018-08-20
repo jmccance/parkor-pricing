@@ -13,11 +13,9 @@ lazy val `parkor-pricing` =
         Circe.`circe-core`,
         Circe.`circe-magnolia-derivation`,
         Circe.`circe-parser`,
-        Jackson.`jackson-core`,     // For JSON logging
-        Jackson.`jackson-databind`, // For JSON logging
-        Log4j.`log4j-api`,
-        Log4j.`log4j-core`,
-        Log4j.`log4j-slf4j-impl`,
+        Logback.`logback-core`,
+        Logback.`logback-classic`,
+        `logstash-logback-encoder`,
         `akka-http-circe`,
         `scala-xml`,
         scaldi,

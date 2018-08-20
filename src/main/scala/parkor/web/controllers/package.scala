@@ -1,4 +1,4 @@
-package parkor
+package parkor.web
 
 import java.time.ZonedDateTime
 

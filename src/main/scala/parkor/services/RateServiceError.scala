@@ -12,8 +12,11 @@ object RateServiceError {
 
   implicit val xmlEncoder: ScalaXmlEncoder[RateServiceError] = {
     case InvalidDateRangeError => <InvalidDateRangeError/>
+    case UnsupportedDateRangeError => <UnsupportedDateRangeError/>
   }
 
   case object InvalidDateRangeError extends RateServiceError
+
+  case object UnsupportedDateRangeError extends RateServiceError
 
 }

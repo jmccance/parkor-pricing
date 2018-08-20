@@ -1,7 +1,7 @@
 package parkor.config
 
-import parkor.controllers.RateController
-import parkor.cors.scaladsl.CorsDirectives._
+import parkor.web.controllers.RateController
+import parkor.web.directives.CorsDirectives._
 import parkor.services.{RateService, RateServiceImpl}
 import parkor.web.{Middleware, Server}
 import scaldi.Module

@@ -2,10 +2,8 @@ package parkor.services
 
 import java.time._
 
-import cats.data.OptionT
-import cats.instances.either._
 import parkor.domain.{Price, Rate}
-import parkor.services.RateServiceError.InvalidDateRangeError
+import parkor.services.RateServiceError.{InvalidDateRangeError, UnsupportedDateRangeError}
 
 trait RateService {
   def priceFor(
@@ -22,32 +20,18 @@ class RateServiceImpl(private val rates: Set[Rate]) extends RateService {
     start: LocalDateTime,
     end: LocalDateTime
   ): Either[RateServiceError, Option[Price]] = {
-    type E[A] = Either[RateServiceError, A]
-    import OptionT._
-
-    // Since we're dealing with a mixture of errors and just not having a value
-    // (when there is no available rate), we make use of the OptionT type to
-    // simplify this logic.
-    //
-    // See https://typelevel.org/cats/datatypes/optiont.html for more
-    // information, but the short version is that we write functions that deal
-    // exactly with our domain of interest (Option, Either, or even pure values)
-    // and then use the methods imported from OptionT to handle the mechanical
-    // plumbing of threading those through the types.
-    val result = for {
-      _ <- some[E](validateDateRange(start, end))
-      dayOfWeek <- fromOption[E](getDayOfWeek(start, end))
-      ratesForDay <- pure[E](rates.filter(_.days.contains(dayOfWeek)))
-      rateForTime <- fromOption[E](
-        getRateForTime(
-          ratesForDay,
-          start.toLocalTime,
-          end.toLocalTime
-        )
-      )
-    } yield rateForTime.price
-
-    result.value
+    validateDateRange(start, end).map { _ =>
+      for {
+        dayOfWeek <- getDayOfWeek(start, end)
+        ratesForDay <- Some(getRatesForDay(rates, dayOfWeek))
+        rateForTime <-
+          getRateForTime(
+            ratesForDay,
+            start.toLocalTime,
+            end.toLocalTime
+          )
+      } yield rateForTime.price
+    }
   }
 }
 
@@ -56,13 +40,15 @@ object RateService {
   def validateDateRange(
     start: LocalDateTime,
     end: LocalDateTime
-  ): Either[RateServiceError, Option[Unit]] =
+  ): Either[RateServiceError, Unit] =
     if (start.isAfter(end)) {
       // Ranges that end before they start are invalid
       Left(InvalidDateRangeError)
-    } else if (Duration.between(start, end).compareTo(Duration.ofDays(1L)) > 0) {
+    } else if (
+      Duration.between(start, end).compareTo(Duration.ofDays(1L)) > 0
+    ) {
       // Ranges that span days are valid, but not meaningful.
-      Right(None)
+      Left(UnsupportedDateRangeError)
     } else {
       // Otherwise, the range is valid
       Right(Some(()))
@@ -83,6 +69,9 @@ object RateService {
   ): Option[DayOfWeek] =
     if (start.getDayOfWeek != end.getDayOfWeek) None
     else Some(start.getDayOfWeek)
+
+  def getRatesForDay(rates: Iterable[Rate], dayOfWeek: DayOfWeek): Iterable[Rate] =
+    rates.filter(_.days.contains(dayOfWeek))
 
   /** Given a set of rates for a specific day of the week.
     *

@@ -1,7 +1,7 @@
 package parkor.web
 
 import akka.http.scaladsl.server._
-import parkor.controllers.RateController
+import parkor.web.controllers.RateController
 
 class Server(
   middleware: Directive0,

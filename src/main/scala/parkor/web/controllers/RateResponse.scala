@@ -1,4 +1,4 @@
-package parkor.controllers
+package parkor.web.controllers
 
 import io.circe.Encoder
 import io.circe.magnolia.derivation.encoder.semiauto._
@@ -17,3 +17,5 @@ object RateResponse {
   }
 
 }
+
+case class RateError()

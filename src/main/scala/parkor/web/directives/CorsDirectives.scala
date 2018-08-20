@@ -1,4 +1,4 @@
-package parkor.cors.scaladsl
+package parkor.web.directives
 
 import akka.http.scaladsl.model.headers._
 import akka.http.scaladsl.server.Directive0
